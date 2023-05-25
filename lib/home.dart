@@ -22,11 +22,17 @@ class HomePage extends StatelessWidget {
       //SizedBox(height: kSectionPadding),
       //Headline5("Premier League"),
       //MatchCardSlider(Premier),
-      SizedBox(height: kSectionPadding),
-      Headline5("La Liga"),
-      MatchCardSlider(LaLiga),
-    ]
-        .map((element) => element is MatchCardSlider
+      //SizedBox(height: kSectionPadding),
+      //Headline5("La Liga"),
+      //MatchCardSlider(LaLiga),
+    ];
+    leagues.entries.forEach((element) {
+      children.add(SizedBox(height: kSectionPadding));
+      children.add(Headline5(element.key)); // key is league
+      children.add(MatchCardSlider(element.value));
+    });
+
+        children.map((element) => element is MatchCardSlider
         ? element
         : Padding(
       padding: const Margin.horizontal(kSectionPadding),

@@ -14,7 +14,13 @@ class MatchImage extends StatelessWidget {
       tag: match.title + "Thumbnail",
       child: ClipRRect(
         borderRadius: kAllBorderRadius,
-        child: Image.network(match.thumbnail, fit: BoxFit.cover),
+        child: Image.network(match.thumbnail,
+            fit: BoxFit.cover,
+            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+              return Image.asset(
+                  'assets/Images/football.png'); // Specify the path to your default image asset
+            }
+        ),
       ),
     );
   }
@@ -35,7 +41,7 @@ class MatchTitle extends StatelessWidget {
     TextStyle? style;
 
     if (type == MatchStyle.page) {
-      style = TextStyle(color: context.textTheme.bodyText1?.color);
+      style = TextStyle(color: context.textTheme.bodyLarge?.color);
     }
 
     return Hero(

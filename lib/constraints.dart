@@ -13,16 +13,26 @@ enum MatchStyle { card, page }
 
 class Match {
   const Match({
+    required this.id,
     required this.thumbnail,
     required this.title,
     required this.league,
-    required this.sources,
+    //required this.sources,
     //this.isFavorite = false,
   });
 
-  final String thumbnail, title, league;
-  final Map<String,String> sources;
+  final String id, thumbnail, title, league;
+  //final List<Source> sources;
 //final bool isFavorite;
+}
+
+class Source {
+  const Source({
+    required this.url,
+    required this.headers,
+});
+  final String url;
+  final Map<String,String> headers;
 }
 
 const BorderRadius kAllBorderRadius = BorderRadius.all(

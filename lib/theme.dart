@@ -9,36 +9,36 @@ class AppTheme {
     primaryColor: Color(0xFFd81e27),
     shadowColor: Color(0xFF324754).withOpacity(0.24),
     textTheme: TextTheme(
-      headline4: GoogleFonts.gruppo(
+      headlineMedium: GoogleFonts.gruppo(
         color: Colors.white,
         fontSize: 34,
         fontWeight: FontWeight.bold,
         letterSpacing: 0.4,
       ),
-      headline5: GoogleFonts.chango(
+      headlineSmall: GoogleFonts.chango(
         color: Color(0xFFFFFFFF),
         fontSize: 24,
         fontWeight: FontWeight.w500,
       ),
-      headline6: GoogleFonts.montserrat(
+      titleLarge: GoogleFonts.montserrat(
         color: Color(0xFF324754),
         fontSize: 20,
         fontWeight: FontWeight.w500,
       ),
-      bodyText1: GoogleFonts.montserrat(
+      bodyLarge: GoogleFonts.montserrat(
         color: Color(0xFF324754),
         fontWeight: FontWeight.w500,
         fontSize: 16,
       ),
-      subtitle1: GoogleFonts.montserrat(
+      titleMedium: GoogleFonts.montserrat(
         color: Colors.white,
         fontSize: 12,
       ),
-      subtitle2: GoogleFonts.montserrat(
+      titleSmall: GoogleFonts.montserrat(
         color: Color(0xFF819ab1),
         fontSize: 12,
       ),
-      button: GoogleFonts.montserrat(
+      labelLarge: GoogleFonts.montserrat(
         color: Colors.white,
         letterSpacing: 0.8,
         fontSize: 14,
