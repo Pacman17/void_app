@@ -26,7 +26,13 @@ class HomePage extends StatelessWidget {
       //Headline5("La Liga"),
       //MatchCardSlider(LaLiga),
     ];
+
+
+    print(leagues.length);
+    getMatches();
+    print(leagues.length);
     leagues.entries.forEach((element) {
+      //print(element.key);
       children.add(SizedBox(height: kSectionPadding));
       children.add(Headline5(element.key)); // key is league
       children.add(MatchCardSlider(element.value));

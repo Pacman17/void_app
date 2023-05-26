@@ -29,9 +29,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   google_fonts: ^4.0.4
-  video_viewer: ^1.2.5
+  #video_viewer: ^1.2.5
   helpers: ^1.2.3
   pocketbase: ^0.10.0
+  chewie: ^1.5.0
+  video_player: ^2.6.1
 
 dev_dependencies:
   flutter_test:
@@ -42,6 +44,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/Images/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

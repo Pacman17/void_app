@@ -1,7 +1,15 @@
 import 'constraints.dart';
 import 'package:flutter/material.dart';
-import 'package:better_player/better_player.dart';
-import 'package:video_viewer/video_viewer.dart';
+//import 'package:better_player/better_player.dart';
+//import 'package:video_viewer/video_viewer.dart';
+import 'package:pocketbase/pocketbase.dart';
+import 'package:chewie/chewie.dart';
+import 'package:video_player/video_player.dart';
+
+final pb = PocketBase('http://192.168.1.113:8090');
+late ResultList<RecordModel> d;
+
+
 
 class MatchViewer extends StatefulWidget {
   const MatchViewer(this.match,  {Key? key, this.DB=false}) : super(key: key);
@@ -20,31 +28,61 @@ class _MatchViewerState extends State<MatchViewer> {
   //Future<void> initializePlayer() async {}
   // nxt try yoyo player
   // https://sfux-ext.sfux.info/hls/chapter/105/1588724110/1588724110.m3u8
-  static final VideoViewerController controller = VideoViewerController();
-  late MapEntry<String, String> initial;
-  String link = "";
+  // static final VideoViewerController controller = VideoViewerController();
+
+  // declare video player controllers
+  static late final VideoPlayerController videoPlayerController; //= VideoPlayerController.network(dataSource);
+  late Chewie playerWidget;
+  late ChewieController chewieController;
+
+  late RecordModel initial;
+  late String link;
   String dropdownValue ="";
+  late ResultList<RecordModel> sources;
 
 
 
   @override
   void initState() {
-
-    initial = widget.match.sources.entries.first;
-    link = initial.key;
-    dropdownValue = widget.match.sources.entries.first.key;
-
     super.initState();
+
+    updateMatchSources();
+    dropdownValue = "Link 1";
+    initializePlayer();
   }
 
+  Future<void> initializePlayer() async {
+    Map<String, String> headers = {};
+    late String url;
+    if (sources.totalItems > 0) {
+       url = sources.items.first.getStringValue('url');
+      headers['User-Agent'] = sources.items.first.getStringValue('user_agent');
+      headers['Referer'] = sources.items.first.getStringValue('referer');
+    }
+    else {
+    url = "https://sfux-ext.sfux.info/hls/chapter/105/1588724110/1588724110.m3u8";
+    }
+
+    videoPlayerController = VideoPlayerController.network(url, httpHeaders: headers);
+    await videoPlayerController.initialize();
+    print("Player initialization");
+    chewieController = ChewieController(
+        videoPlayerController: videoPlayerController
+    );
+    playerWidget = Chewie(
+        controller: chewieController
+    );
+  }
   Widget linkbuttons(){
-    //final isSelected = <bool>[];
-    final sources = <String>[];
+    List<String> menuItems = [];
+    int index = 1;
+    for(int i =1; i <= sources.totalItems; i++) {
+      menuItems.add("Link $i");
+    }
 
-    widget.match.sources.forEach((key, value) {
-      sources.add(key);
-    });
-
+    if (menuItems.length == 0) {
+      menuItems.add("No links found");
+    }
 
     return DropdownButton<String>(
       hint: Text("Select Link"),
@@ -62,9 +100,10 @@ class _MatchViewerState extends State<MatchViewer> {
           dropdownValue = newValue!;
         });
         print("He4e");
-        onLinkSelection(widget.match.sources.entries.firstWhere((element) => element.key == dropdownValue));
+        onLinkSelection(menuItems.indexWhere((element) => element == dropdownValue));
+        // onLinkSelection(widget.match.sources.entries.firstWhere((element) => element.key == dropdownValue));
       },
-      items: sources
+      items: menuItems
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
@@ -73,9 +112,9 @@ class _MatchViewerState extends State<MatchViewer> {
       }).toList(),
     );
   }
-  void onLinkSelection(MapEntry<String, String> entry) async {
-    final String linkName = entry.key;
-    if (link != linkName) {
+  void onLinkSelection(int index) async { // previously Map<String, String> entry
+    //final String linkName = entry.key;
+    /*if (link != linkName) {
       //final String qualities = entry.value;
       final String url = entry.value;
 
@@ -83,9 +122,9 @@ class _MatchViewerState extends State<MatchViewer> {
 
       if (url.contains("m3u8")) {
         sources = await VideoSource.fromM3u8PlaylistUrl(url);
-      }/* else {
+      } else {
         sources = VideoSource.fromNetworkVideoSources(url);
-      }*/
+      }
 
       final MapEntry<String, VideoSource> video = sources.entries.first;
 
@@ -102,33 +141,47 @@ class _MatchViewerState extends State<MatchViewer> {
       setState(() {});
     } else {
       controller.closeSettingsMenu();
-    }
+    } */
+    String url = sources.items.elementAt(index).getStringValue('url');
+    Map<String, String> headers = {};
+    headers['User-Agent'] = sources.items.elementAt(index).getStringValue('user_agent');
+    headers['Referer'] = sources.items.elementAt(index).getStringValue('referer');
+
+    videoPlayerController = VideoPlayerController.network(url, httpHeaders: headers);
+    await videoPlayerController.initialize();
+
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController
+    );
+    playerWidget = Chewie(
+        controller: chewieController
+    );
+
+
+  }
+
+  void updateMatchSources() async {
+    final id = widget.match.id;
+    final events = await pb.collection('stream_data').getList(
+        page: 1,
+        perPage: 50,
+        filter: 'event_id = $id'
+    );
+    sources = events;
   }
 
   @override
   void dispose() async {
+    await videoPlayerController.dispose();
+    chewieController.dispose();
     super.dispose();
     //await _videoViewController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    String intUrl = widget.match.sources.entries.first.value;
-    return widget.DB ? linkbuttons() : BetterPlayer.network("https://edgesports-plex.amagi.tv/playlist.m3u8?Urj7svfj=&Rkj2f3jk=&Czj1i9k6=");
-
-
-    /*linkbuttons():VideoViewer(
-      //onFullscreenFixLandscape: true,
-      enableHorizontalSwapingGesture: false,
-      enableFullscreenScale: true,
-      controller: controller,
-      source: VideoSource.fromNetworkVideoSources({
-        "video":intUrl,
-      }
-      ),
-      style: CustomVideoViewerStyle(match: widget.match, context: context),
-    );*/
-
+    initializePlayer();
+    return widget.DB ? linkbuttons() : playerWidget;
 
   }
 }

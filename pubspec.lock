@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
+  chewie:
+    dependency: "direct main"
+    description:
+      name: chewie
+      sha256: "745e81e84c6d7f3835f89f85bb49771c0a66099e4caf8f8e9e9a372bc66fb2c1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
   clock:
     dependency: transitive
     description:
@@ -104,14 +112,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  gesture_x_detector:
-    dependency: transitive
-    description:
-      name: gesture_x_detector
-      sha256: "777855ee4e1fa4d677c40d6a44b9106696ef6745879027c8871e334cee8cde1e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.1"
   google_fonts:
     dependency: "direct main"
     description:
@@ -366,7 +366,7 @@ packages:
     source: hosted
     version: "2.1.4"
   video_player:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: video_player
       sha256: de95f0e9405f29b5582573d4166132e71f83b3158aac14e8ee5767a54f4f1fbd
@@ -405,30 +405,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.16"
-  video_viewer:
-    dependency: "direct main"
-    description:
-      name: video_viewer
-      sha256: "543dc4ad297024ad04a984be91e5f6ab9fa292e2ab86b070c200b2de93acf376"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.7"
-  volume_watcher:
-    dependency: transitive
-    description:
-      name: volume_watcher
-      sha256: "738f05c80dbda963cee4e9945291cd3c94229aa04c10da9386caef243deeac6f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   wakelock:
     dependency: transitive
     description:
       name: wakelock
-      sha256: da22c0789e1f849bec43688a52f2290f4e66268056f7cd77cb71245aef4917a0
+      sha256: "769ecf42eb2d07128407b50cb93d7c10bd2ee48f0276ef0119db1d25cc2f87db"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.6"
+    version: "0.6.2"
   wakelock_macos:
     dependency: transitive
     description:
